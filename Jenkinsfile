@@ -11,9 +11,9 @@ pipeline {
   
   stages {
     stage('Cloning Git') {
-     steps {
+   /*  steps {
       git 'https://github.com/gustavoapolinario/microservices-node-example-todo-frontend.git'
-     }
+     }*/
     }  
    stage('Building image') {
       steps{
@@ -44,9 +44,9 @@ pipeline {
   }
   
   stage('Remove Unused docker image') {
-      steps{
+   //   steps{
       //  sh "docker rmi $registry:$BUILD_NUMBER"
-      }
+   //   }
     }
  }
 }
