@@ -1,57 +1,32 @@
-pipeline {
+def label = "worker-${UUID.randomUUID().toString()}"
 
-  environment {
-    registry = "venkateshpakanati/devops"
-    registryCredential = 'batmeyou007'
-    dockerImage = ''
-   // def app
-  }
-
-  agent any
-  
-  stages {
-    stage('template test') {
-      steps {
-        echo 'test'
-      }
-    }
-   /* stage('Cloning Git') {
-     steps {
-      git 'https://github.com/gustavoapolinario/microservices-node-example-todo-frontend.git'
-     }
-    }  
-   stage('Building image') {
-      steps{
-        script {
-         docker.build(registry + ":$BUILD_NUMBER")
-        }
-      }
-    }
- /*   stage('Test image') {
-        
-        app.inside {
-            sh 'echo "Tests passed"'
-        }
-    } 
+podTemplate(label: label, containers: [
+  containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true),
+  containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl:v1.8.8', command: 'cat', ttyEnabled: true),
+  containerTemplate(name: 'helm', image: 'lachlanevenson/k8s-helm:latest', command: 'cat', ttyEnabled: true)
+]) {
+  node(label) {
+    def myRepo = checkout scm
+    def gitCommit = myRepo.GIT_COMMIT
+    def gitBranch = myRepo.GIT_BRANCH
+    def shortGitCommit = "${gitCommit[0..10]}"
+    def previousGitCommit = sh(script: "git rev-parse ${gitCommit}~", returnStdout: true)
  
-  stage('Deploy Image') {
-   steps{
-    script {
-      //docker.withRegistry('https://cloud.docker.com/', registryCredential ) {
-    //    dockerImage.push()
-      docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-          dockerImage.push()
-        //    app.push("${env.BUILD_NUMBER}")
-        //    app.push("latest")
+    stage('Test') {
+      try {
+        container('gradle') {
+          sh """
+            pwd
+            echo "GIT_BRANCH=${gitBranch}" >> /etc/environment
+            echo "GIT_COMMIT=${gitCommit}" >> /etc/environment
+            gradle test
+            """
+        }
+      }
+      catch (exc) {
+        println "Failed to test - ${currentBuild.fullDisplayName}"
+        throw(exc)
       }
     }
-   }
   }
-  
- stage('Remove Unused docker image') {
-   //   steps{
-      //  sh "docker rmi $registry:$BUILD_NUMBER"
-   //   }
-    } */
- }
 }
