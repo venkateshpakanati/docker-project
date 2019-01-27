@@ -10,11 +10,14 @@ pipeline {
   agent any
   
   stages {
+    stage('template test') {
+      echo 'test'
+    }
    /* stage('Cloning Git') {
      steps {
       git 'https://github.com/gustavoapolinario/microservices-node-example-todo-frontend.git'
      }
-    }  */
+    }  
    stage('Building image') {
       steps{
         script {
@@ -27,7 +30,7 @@ pipeline {
         app.inside {
             sh 'echo "Tests passed"'
         }
-    } */
+    } 
  
   stage('Deploy Image') {
    steps{
@@ -43,7 +46,7 @@ pipeline {
    }
   }
   
-/*  stage('Remove Unused docker image') {
+ stage('Remove Unused docker image') {
    //   steps{
       //  sh "docker rmi $registry:$BUILD_NUMBER"
    //   }
