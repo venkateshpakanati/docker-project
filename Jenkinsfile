@@ -11,7 +11,9 @@ pipeline {
   
   stages {
     stage('template test') {
-      echo 'test'
+      steps {
+        echo 'test'
+      }
     }
    /* stage('Cloning Git') {
      steps {
