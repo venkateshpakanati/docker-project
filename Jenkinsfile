@@ -2,8 +2,14 @@ def label = "mypod-${UUID.randomUUID().toString()}"
 images = [node:"node:9", nodeMemLmt:"1000Mi", nodeCpuLmt:"700m"]
 podTemplate(label: label) {
     node(label) {
-        stage('Run shell') {
+        containerTemplate {
+                    name 'dind-jdk8-maven3'
+                    image 'eu.gcr.io/jenkins-demo/dind-jdk8-maven3:v4'
+                    ttyEnabled true
+                    command 'cat'
+         }
+    /*    stage('Run shell') {
             sh 'echo hello world'
-        }
+        }*/
     }
 }
