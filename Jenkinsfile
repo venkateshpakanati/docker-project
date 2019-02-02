@@ -13,7 +13,7 @@ podTemplate(label: label) {
         }
     }
 }*/
-node {
+
 podTemplate(label: 'pod-golang', 
     containers: [
         containerTemplate(
@@ -24,14 +24,13 @@ podTemplate(label: 'pod-golang',
         )
     ]
 ) {
- //   node ('Jenkins') {
+ node ('golang') {
 
-    //    stage 'Switch to Utility Container'
+      stage 'Switch to Utility Container'
         container('golang') {
 
           sh ("go version")
 
-        }
- //   }
-}
+       }
+    }
 }
