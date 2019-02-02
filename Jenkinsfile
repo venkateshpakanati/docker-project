@@ -13,6 +13,7 @@ podTemplate(label: label) {
         }
     }
 }*/
+node {
 podTemplate(label: 'pod-golang', 
     containers: [
         containerTemplate(
@@ -32,4 +33,5 @@ podTemplate(label: 'pod-golang',
 
         }
  //   }
+}
 }
