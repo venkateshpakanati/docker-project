@@ -28,10 +28,11 @@ podTemplate(label: 'pod-golang',
     node ('Jenkins') {
 
         stage 'Switch to Utility Container'
+        steps {
         container('golang') {
 
           sh ("go version")
-
+        }
         }
     }
     }
