@@ -13,7 +13,7 @@ podTemplate(label: label) {
         }
     }
 }*/
-
+node {
 podTemplate(label: 'pod-golang', 
     containers: [
         containerTemplate(
@@ -24,7 +24,7 @@ podTemplate(label: 'pod-golang',
         )
     ]
 ) {
-    node {
+    
    // node ('pod-golang') {
 
         stage 'Switch to Utility Container'
